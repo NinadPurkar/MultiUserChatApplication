@@ -1,0 +1,33 @@
+
+User & Server
+
+1) User-->Server
+	login/logoff
+	*status
+
+2) Server---> User
+	*online/offline
+	
+3) User ---> User
+
+	direct msg to users
+	msg <user> <text>
+	
+	ie. msg temp hello world  - ---< sent 
+	
+	temp: msg guest hello world ------received
+	
+	broadcast msg to all user
+	
+	//group messaging/ # topic 
+	send msg to topic . every member of topic will recieve msg
+	
+	# topic - chat room / or / group chat 
+	join topic				-> command to join topic 
+	msg #topic body			--> command to send msg to group
+	
+	
+	
+Commands : 
+	login <username> <password>
+	loggoff
