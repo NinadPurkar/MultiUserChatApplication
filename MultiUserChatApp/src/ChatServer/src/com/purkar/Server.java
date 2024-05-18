@@ -33,7 +33,8 @@ public class Server extends Thread{
 			ServerSocket serverSocket = new ServerSocket(serverport);
 			while(true)
 			{
-				Socket clientSocket = serverSocket.accept();
+				System.out.println("waiting for connection");
+				Socket clientSocket = serverSocket.accept();				
 				ServerWorker serverWorker = new ServerWorker(this,clientSocket);
 				workerList.add(serverWorker);
 				serverWorker.start();

@@ -31,6 +31,7 @@ public class ServerWorker extends Thread{
 	{
 		
 		try {
+			System.out.println("run method in serverworker");
 			handleClientSocket();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -49,11 +50,13 @@ public class ServerWorker extends Thread{
 			BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 			
 			String line;
-			while((line=reader.readLine()) != null)
+			System.out.println("its in handleClientSocket method");
+			while(reader.readLine() != null)
 			{
-				
+				line = reader.readLine();
 				String [] tokens = line.split("\\s");
 				String cmd = tokens[0];
+				System.out.println("client provided token 0 :"+tokens[0]);
 				if("login".equalsIgnoreCase(cmd))
 				{
 					handleLogin(outputStream, tokens);
@@ -75,9 +78,11 @@ public class ServerWorker extends Thread{
 				{
 					handleLeave(tokens);
 				}
-				
-				String msg =  "You typed: "+line;
-				outputStream.write(msg.getBytes());
+				else
+				{
+					String msg =  "You typed: "+line;
+					outputStream.write(msg.getBytes());
+				}
 			}
 			
 			clientSocket.close();
@@ -163,30 +168,31 @@ public class ServerWorker extends Thread{
 			if ("guest".equals(user_name) && "guest".equals(password) ||
 					"temp".equals(user_name) && "temp".equals(password))
 			{
-				String msg = "ok Login";
+				String msg = "ok Login\n";
 				this.login = user_name;
 				outputStream.write(msg.getBytes());
 				List <ServerWorker> workerList = server.getWorkerList();
 				
-				//send current user all other users online status:
+				// send all current users the notification that this login is now online
+				String onlineMsg = "This guy is online:"+login+"\n";
 				for(ServerWorker sw: workerList)
 				{
 					if(!login.equals(sw.getLogin()) && sw.getLogin() != null)
 					{
-						String onlineMsg = "online"+sw.getLogin()+"\n";
 						sw.send(onlineMsg);
 					}
 				}
 				
-				// send other users current user status
-				String Msg2 = "online"+user_name+"\n";
+				// send current user other users status .
 				for(ServerWorker sw: workerList)
 				{
-					if (!login.equals(sw.getLogin()) )
+					if(!login.equals(sw.getLogin()) && sw.getLogin() != null)
 					{
-						sw.send(Msg2);
+						String onlineMsg2 = "They are already onnline"+sw.getLogin()+"\n";
+						this.send(onlineMsg2);
 					}
 				}
+				
 			}
 			else
 			{
