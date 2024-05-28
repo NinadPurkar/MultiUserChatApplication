@@ -10,3 +10,6 @@ if login allow
 who all are loggin in to the server;
 # User-User
 #user to broadcast message in group
+
+# For client side we can use 
+telnet to comunicate with socket server which will be listening on specific port. 
